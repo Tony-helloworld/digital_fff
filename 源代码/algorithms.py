@@ -404,27 +404,27 @@ def fft_frequency(img):
     return new
 
 
-def enhance_brightness(img):
+def enhance_brightness(img,co):
     img = Image.fromarray(img)
-    img = img.point(lambda i: i * 1.3)
+    img = img.point(lambda i: int(i * co))
     img = np.array(img)
     return img
 
-def enhance_sharpeness(img):
+def enhance_sharpeness(img,co):
     img = Image.fromarray(img)
-    img = ImageEnhance.Sharpness(img).enhance(3)
+    img = ImageEnhance.Sharpness(img).enhance(co)
     img = np.array(img)
     return img
 
-def enhance_contrast(img):
+def enhance_contrast(img,co):
     img = Image.fromarray(img)
-    img = ImageEnhance.Contrast(img).enhance(1.3)
+    img = ImageEnhance.Contrast(img).enhance(co)
     img = np.array(img)
     return img
 
-def enhance_color(img):
+def enhance_color(img,co):
     img = Image.fromarray(img)
-    img = ImageEnhance.Color(img).enhance(2)
+    img = ImageEnhance.Color(img).enhance(co)
     img = np.array(img)
     return img
 
