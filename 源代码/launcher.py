@@ -8,7 +8,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap,QKeyEvent
 from PyQt5 import QtGui
-
+import os
 import sys
 class Launcher(QWidget):
     def __init__(self, parent=None):
@@ -200,13 +200,30 @@ class Launcher(QWidget):
         dialog.setFileMode(QFileDialog.AnyFile)
         # 设置显示文件的模式，这里是详细模式
         dialog.setViewMode(QFileDialog.Detail)
+
         if dialog.exec_():
             fileNames = dialog.selectedFiles()
             print(fileNames)
-            self.current_img_path = fileNames[0]
-            self.set_img()
-            self.set_working_dir()
-            self.set_all_img_path()
+            # print(fileNames[0])
+            if self.is_folder_or_file(fileNames[0]):
+                count=0
+                for filename in os.listdir(fileNames[0]):
+                    file_path = os.path.join(fileNames[0], filename)
+                    # 检查文件是否是图片文件（.bmp、.png、.jpg）
+                    if os.path.isfile(file_path) and filename.lower().endswith(('.bmp', '.png', '.jpg')):
+                        count+=1
+                        if(count==1):
+                            self.current_img_path = file_path
+                        self.all_img.append(filename)
+                print(self.current_img_path)
+                self.set_img()
+                self.working_dir = fileNames[0]
+                self.current_img_index = 0
+            else:
+                self.current_img_path = fileNames[0]
+                self.set_img()
+                self.set_working_dir()
+                self.set_all_img_path()
 
     def set_img_format(self):
         img = Image.open(self.current_img_path).convert("RGB")
@@ -220,6 +237,7 @@ class Launcher(QWidget):
                 index = i
                 break
         self.working_dir = path[:-index]
+        print("working", self.working_dir)
 
     def set_all_img_path(self):
         import os
@@ -274,6 +292,16 @@ class Launcher(QWidget):
             self.current_img_index -= 1
         self.current_img_path = self.working_dir + '/' + self.all_img[self.current_img_index]
         self.set_img(self.current_img_path)
+    def is_folder_or_file(self, path):
+
+        if os.path.exists(path):
+            if os.path.isdir(path):
+                return True
+            elif os.path.isfile(path):
+                return False
+
+        return None
+
 # if __name__ == '__main__':
 #     app = QApplication(sys.argv)
 #     launcher = Launcher()
