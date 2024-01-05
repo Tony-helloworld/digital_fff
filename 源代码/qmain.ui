@@ -39,9 +39,9 @@
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
-    <rect>
-     <x>465</x>
-     <y>140</y>
+   <rect>
+    <x>465</x>
+    <y>140</y>
      <width>450</width>
      <height>390</height>
     </rect>
@@ -319,7 +319,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Butterworth低通</string>
+         <string>布特沃斯低通</string>
         </property>
        </widget>
       </item>
@@ -414,7 +414,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Butterworth高通</string>
+         <string>布特沃斯高通</string>
         </property>
        </widget>
       </item>
