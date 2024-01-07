@@ -2,18 +2,21 @@ import algorithms
 import numpy as np
 from PIL import Image
 
-from PyQt5.QtWidgets import QApplication, QWidget,QFileDialog, QSlider
+from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog, QSlider
 
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap,QKeyEvent
+from PyQt5.QtGui import QPixmap, QKeyEvent
 from PyQt5 import QtGui
 import os
 import sys
+import cv2
+
+
 class Launcher(QWidget):
     def __init__(self, parent=None):
         super(Launcher, self).__init__(parent)
-        self.ui = loadUi('qmain.ui',self)
+        self.ui = loadUi('qmain.ui', self)
         self.ui.setWindowTitle("数字图像处理大作业(谭演锋、杨竣尧、郭荣锦)")
         self.label = self.ui.label
 
@@ -22,7 +25,7 @@ class Launcher(QWidget):
         self.ui.horizontalSlider_3.valueChanged.connect(self.handel_enhance_color)
         self.ui.horizontalSlider_4.valueChanged.connect(self.handel_enhance_brightness)
 
-        #connect btn
+        # connect btn
         self.ui.btn_open.clicked.connect(self.open_folder)
         self.ui.original_btn.clicked.connect(self.set_original_img)
         self.ui.exp_btn.clicked.connect(self.handel_exponential)
@@ -67,17 +70,18 @@ class Launcher(QWidget):
         self.all_img = []
         self.current_img_index = 0
 
-    def set_img(self,path=""):
+    def set_img(self, path=""):
         if path != "":
             self.current_img_path = path
         self.img = QPixmap(self.current_img_path)
         self.original_img = self.img
-        self.img = self.img.scaled(self.label.size(), aspectRatioMode=Qt.KeepAspectRatio, transformMode=Qt.SmoothTransformation)
+        self.img = self.img.scaled(self.label.size(), aspectRatioMode=Qt.KeepAspectRatio,
+                                   transformMode=Qt.SmoothTransformation)
         self.label.setPixmap(self.img)
         self.label_2.setPixmap(self.img)
+
     def set_original_img(self):
         self.set_img()
-
 
     def handel_reverse(self):
         print("handeling reverse")
@@ -122,7 +126,7 @@ class Launcher(QWidget):
 
     def handel_gauss_high(self):
         self.set_img_format()
-        self.img_arr = algorithms._filter(self.img_arr,method="gauss_high")
+        self.img_arr = algorithms._filter(self.img_arr, method="gauss_high")
         self.handle_change_image()
 
     def handel_gauss_low(self):
@@ -136,7 +140,7 @@ class Launcher(QWidget):
         self.handle_change_image()
 
     def handel_butterworth_low(self):
-        self.set_img_format()
+        self.set_img_format_gray()
         self.img_arr = algorithms._filter(self.img_arr, method="butterworth_low")
         self.handle_change_image()
 
@@ -147,26 +151,25 @@ class Launcher(QWidget):
 
     def handel_enhance_brightness(self):
         self.set_img_format()
-        self.img_arr = algorithms.enhance_brightness(self.img_arr,self.ui.horizontalSlider_4.value())
+        self.img_arr = algorithms.enhance_brightness(self.img_arr, self.ui.horizontalSlider_4.value())
         self.handle_change_image()
-
 
     def handel_enhance_sharpness(self):
         self.set_img_format()
-        self.img_arr = algorithms.enhance_sharpeness(self.img_arr,self.ui.horizontalSlider.value())
+        self.img_arr = algorithms.enhance_sharpeness(self.img_arr, self.ui.horizontalSlider.value())
         self.handle_change_image()
+
     def handel_enhance_color(self):
         self.set_img_format()
-        self.img_arr = algorithms.enhance_color(self.img_arr,self.ui.horizontalSlider_3.value())
+        self.img_arr = algorithms.enhance_color(self.img_arr, self.ui.horizontalSlider_3.value())
         self.handle_change_image()
+
     def handel_enhance_contrast(self):
         self.ui.horizontalSlider.setTickPosition(QSlider.TicksLeft)
         self.set_img_format()
-        self.img_arr = algorithms.enhance_contrast(self.img_arr,self.ui.horizontalSlider_2.value())
+        self.img_arr = algorithms.enhance_contrast(self.img_arr, self.ui.horizontalSlider_2.value())
 
         self.handle_change_image()
-
-
 
     def handel_fft_frequenct(self):
         self.set_img_format()
@@ -190,9 +193,8 @@ class Launcher(QWidget):
 
     def handel_edge(self):
         self.set_img_format()
-        self.img_arr = algorithms.laplaceSharpen(self.img_arr,"edge")
+        self.img_arr = algorithms.laplaceSharpen(self.img_arr, "edge")
         self.handle_change_image()
-
 
     def open_folder(self):
 
@@ -206,13 +208,13 @@ class Launcher(QWidget):
             print(fileNames)
             # print(fileNames[0])
             if self.is_folder_or_file(fileNames[0]):
-                count=0
+                count = 0
                 for filename in os.listdir(fileNames[0]):
                     file_path = os.path.join(fileNames[0], filename)
                     # 检查文件是否是图片文件（.bmp、.png、.jpg）
                     if os.path.isfile(file_path) and filename.lower().endswith(('.bmp', '.png', '.jpg')):
-                        count+=1
-                        if(count==1):
+                        count += 1
+                        if (count == 1):
                             self.current_img_path = file_path
                         self.all_img.append(filename)
                 print(self.current_img_path)
@@ -229,10 +231,13 @@ class Launcher(QWidget):
         img = Image.open(self.current_img_path).convert("RGB")
         self.img_arr = np.array(img)
 
+    def set_img_format_gray(self):
+        self.img_arr = cv2.imread(self.current_img_path, cv2.IMREAD_GRAYSCALE)
+
     def set_working_dir(self):
         path = str(self.current_img_path)
         index = 0
-        for i in range(1,len(path)):
+        for i in range(1, len(path)):
             if path[-i] == '/':
                 index = i
                 break
@@ -246,20 +251,23 @@ class Launcher(QWidget):
             if os.path.splitext(file)[1] == '.bmp' or os.path.splitext(file)[1] == '.png':  # 目录下包含.json的文件
                 self.all_img.append(file)
         print(self.all_img)
-        temp = self.current_img_path.replace(self.working_dir,"")[1:]
+        temp = self.current_img_path.replace(self.working_dir, "")[1:]
         self.current_img_index = self.all_img.index(temp)
 
-
     def handle_change_image(self):
-        #print(self.img_arr.shape)
+        # print(self.img_arr.shape)
         qimage = None
-        if len(self.img_arr.shape)==3:
+        if len(self.img_arr.shape) == 3:
             qimage = QtGui.QImage(self.img_arr, self.img_arr.shape[1], self.img_arr.shape[0]
-                                  ,self.img_arr.shape[1]*3, QtGui.QImage.Format_RGB888)
+                                  , self.img_arr.shape[1] * 3, QtGui.QImage.Format_RGB888)
 
-        if len(self.img_arr.shape)==2:
+        if len(self.img_arr.shape) == 2:
+            print("gray")
+            self.img_arr = cv2.cvtColor(self.img_arr, cv2.COLOR_GRAY2RGB)
             qimage = QtGui.QImage(self.img_arr, self.img_arr.shape[1], self.img_arr.shape[0]
-                                  , QtGui.QImage.Format_Grayscale8)
+                                  , self.img_arr.shape[1] * 3, QtGui.QImage.Format_RGB888)
+            # qimage = QtGui.QImage(self.img_arr, self.img_arr.shape[1], self.img_arr.shape[0]
+            #                       , QtGui.QImage.Format_Grayscale16)
 
         pix = QPixmap(qimage)
         pix = pix.scaled(self.label.size(), aspectRatioMode=Qt.KeepAspectRatio, transformMode=Qt.SmoothTransformation)
@@ -267,20 +275,19 @@ class Launcher(QWidget):
 
     def keyPressEvent(self, keyevent):
         keyevent = QKeyEvent(keyevent)
-        if(keyevent.key() == Qt.Key_A):
+        if (keyevent.key() == Qt.Key_A):
             self.previous_img()
-        if(keyevent.key() == Qt.Key_D):
+        if (keyevent.key() == Qt.Key_D):
             self.next_img()
         if (keyevent.key() == Qt.Key_P):
             self.open_folder()
         if (keyevent.key() == Qt.Key_O):
             self.set_original_img()
 
-
     def next_img(self):
         if self.current_img_path == "":
             return
-        if self.current_img_index+1 < len(self.all_img):
+        if self.current_img_index + 1 < len(self.all_img):
             self.current_img_index += 1
         self.current_img_path = self.working_dir + '/' + self.all_img[self.current_img_index]
         self.set_img(self.current_img_path)
@@ -292,6 +299,7 @@ class Launcher(QWidget):
             self.current_img_index -= 1
         self.current_img_path = self.working_dir + '/' + self.all_img[self.current_img_index]
         self.set_img(self.current_img_path)
+
     def is_folder_or_file(self, path):
 
         if os.path.exists(path):
@@ -301,6 +309,7 @@ class Launcher(QWidget):
                 return False
 
         return None
+
 
 # if __name__ == '__main__':
 #     app = QApplication(sys.argv)

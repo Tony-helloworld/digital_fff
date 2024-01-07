@@ -1,8 +1,8 @@
 import numpy as np
 import cv2
-from PIL import Image,ImageEnhance
+from PIL import Image, ImageEnhance
 import math
-
+import matplotlib.pyplot as plt
 
 def assign(num):
     if num >= 255:
@@ -49,33 +49,34 @@ def laplaceSharpen(imarray, method="enhance"):
 
 def equalizeHist(img):
     if len(img.shape) == 3:
-        R = img[:,:,0]
-        G = img[:,:,1]
-        B = img[:,:,2]
+        R = img[:, :, 0]
+        G = img[:, :, 1]
+        B = img[:, :, 2]
         R = cv2.equalizeHist(R)
         G = cv2.equalizeHist(G)
         B = cv2.equalizeHist(B)
         img[:, :, 0] = R
         img[:, :, 1] = G
         img[:, :, 2] = B
-    else:#单通道灰度图像
+    else:  # 单通道灰度图像
         img = cv2.equalizeHist(img)
     return img
 
 
-def exponential(img,C=10,gamma=0.4):
-    img1 = C*np.power(img,gamma)
+def exponential(img, C=10, gamma=0.4):
+    img1 = C * np.power(img, gamma)
     img1 = img1.astype(np.uint8)
     return img1
+
 
 def reverse_img(img):
     return 255 - img
 
-def gamma_transformation(img,gamma=0.4):
-    img1 = np.power(img/float(255),1/float(gamma))*255
+
+def gamma_transformation(img, gamma=0.4):
+    img1 = np.power(img / float(255), 1 / float(gamma)) * 255
     img1 = img1.astype(np.uint8)
     return img1
-
 
 
 def midFilter(imarray, k=3):
@@ -96,7 +97,7 @@ def midFilter(imarray, k=3):
                 new_arr[i, j] = imarray[i, j]
             else:
                 num = imarray[i - edge: i + edge + 1, j - edge: j + edge + 1]
-                num = num.reshape((k*k, 3))
+                num = num.reshape((k * k, 3))
                 num = list(num[:, 0])
                 temp = np.median(num)
                 idex_tem = num.index(temp)  # 获取中值在数组中的坐标
@@ -105,8 +106,8 @@ def midFilter(imarray, k=3):
                 new_arr[i][j] = imarray[l1][l2]  # 赋值
     return new_arr
 
-def avgFilter(imarray, k=3):
 
+def avgFilter(imarray, k=3):
     if len(imarray.shape) == 3:
         height, width, _ = imarray.shape
         if _ == 4:
@@ -128,23 +129,24 @@ def avgFilter(imarray, k=3):
                 new_arr[i][j][0] = np.average(num[:, :, 0])
                 new_arr[i][j][1] = np.average(num[:, :, 1])
                 new_arr[i][j][2] = np.average(num[:, :, 2])
-    #new_im = Image.fromarray(new_arr)
+    # new_im = Image.fromarray(new_arr)
     return new_arr
 
-def oil_painting(img,template=4, bucket=8, step=2):#,img,template, bucket, step
-    grey = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
-    grey = (grey/float(256)*bucket).astype(np.uint8)
-    h,w = grey.shape
-    oil_img = np.zeros(img.shape,np.uint8)
 
-    for i in range(0,h,step): #确定模板的位置
+def oil_painting(img, template=4, bucket=8, step=2):  # ,img,template, bucket, step
+    grey = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    grey = (grey / float(256) * bucket).astype(np.uint8)
+    h, w = grey.shape
+    oil_img = np.zeros(img.shape, np.uint8)
+
+    for i in range(0, h, step):  # 确定模板的位置
         top = i - template
         bottom = i + template
         if top < 0:
             top = 0
         if bottom >= h:
             bottom = h - 1
-        for j in range(0,w,step):
+        for j in range(0, w, step):
             left = j - template
             right = j + template
             if left < 0:
@@ -152,30 +154,30 @@ def oil_painting(img,template=4, bucket=8, step=2):#,img,template, bucket, step
             if right >= w:
                 right = w - 1
 
-            bucket_mat = np.zeros(bucket,np.uint8)
-            for x in range(top,bottom):#计算bucket中每个值的个数
-                for y in range(left,right):
-                    bucket_mat[grey[x,y]] += 1
+            bucket_mat = np.zeros(bucket, np.uint8)
+            for x in range(top, bottom):  # 计算bucket中每个值的个数
+                for y in range(left, right):
+                    bucket_mat[grey[x, y]] += 1
 
             maxBucket = np.max(bucket_mat)  # 找出像素最多的桶的次数以及它的索引
             maxBucketIndex = np.argmax(bucket_mat)
 
             mean = [0, 0, 0]
-            for x in range(top,bottom):
-                for y in range(left,right):
-                    if grey[x,y] == maxBucketIndex:
-                        mean += img[x,y]
-            mean = (mean/maxBucket).astype(np.uint8) #三通道均值
+            for x in range(top, bottom):
+                for y in range(left, right):
+                    if grey[x, y] == maxBucketIndex:
+                        mean += img[x, y]
+            mean = (mean / maxBucket).astype(np.uint8)  # 三通道均值
 
             for m in range(step):
                 for n in range(step):
-                    if m+i>=h or n+j>=w:
+                    if m + i >= h or n + j >= w:
                         continue
                     oil_img[m + i, n + j] = (mean[0], mean[1], mean[2])
     return oil_img
 
-def sketch(img_array):
 
+def sketch(img_array):
     img = Image.fromarray(img_array)
     new = Image.new("L", img.size, 255)
     width, height = img.size
@@ -223,72 +225,102 @@ def sketch(img_array):
     return arr
 
 
-
-def gauss_low(fshift,d0):
+def gauss_low(fshift, d0):
     M = fshift.shape[0]
     N = fshift.shape[1]
-    h = np.zeros((M,N))
+    h = np.zeros((M, N))
     for i in range(M):
         for j in range(N):
-            d = math.sqrt(math.pow(i-M//2,2)+math.pow(j-N//2,2))
-            h[i][j] = math.exp(-(math.pow(d,2))/(2*math.pow(d0,2)))
-    return np.multiply(fshift,h)
+            d = math.sqrt(math.pow(i - M // 2, 2) + math.pow(j - N // 2, 2))
+            h[i][j] = math.exp(-(math.pow(d, 2)) / (2 * math.pow(d0, 2)))
+    return np.multiply(fshift, h)
 
-def butterworth_low(fshift,d0):
+
+def butterworth_low(g_shifted, d0):
+    # M = fshift.shape[0]
+    # N = fshift.shape[1]
+    # h = np.zeros((M,N))
+    # nn = 2
+    # for i in range(M):
+    #     for j in range(N):
+    #         d = math.sqrt(math.pow(i-M//2,2)+math.pow(j-N//2,2))
+    #         h[i][j] = 1/(1+math.pow(d/d0,2*nn))
+    # return np.multiply(fshift,h)
+
+    # 获取图像尺寸
+    M, N = g_shifted.shape
+
+    # 生成滤波器的中心
+    x = np.arange(-N / 2, N / 2)
+    y = np.arange(-M / 2, M / 2)
+    x, y = np.meshgrid(x, y)
+
+    # 设定布特沃斯滤波器的参数
+    D0 = 20.0  # 截止频率
+    n = 3  # 滤波器的阶数
+
+    # 计算距离中心的距离
+    D = np.sqrt(x ** 2 + y ** 2)
+
+    # 创建布特沃斯低通滤波器
+    Butterworth_low_pass = 1 / (1 + (D / D0) ** (2 * n))
+
+    # 应用布特沃斯低通滤波器到频域图像
+    g_filtered = g_shifted * Butterworth_low_pass
+
+    return g_filtered
+
+
+def butterworth_high(fshift, d0):
     M = fshift.shape[0]
     N = fshift.shape[1]
-    h = np.zeros((M,N))
+    h = np.zeros((M, N))
     nn = 2
     for i in range(M):
         for j in range(N):
-            d = math.sqrt(math.pow(i-M//2,2)+math.pow(j-N//2,2))
-            h[i][j] = 1/(1+math.pow(d/d0,2*nn))
-    return np.multiply(fshift,h)
-
-def butterworth_high(fshift,d0):
-    M = fshift.shape[0]
-    N = fshift.shape[1]
-    h = np.zeros((M,N))
-    nn = 2
-    for i in range(M):
-        for j in range(N):
-            d = math.sqrt(math.pow(i-M//2,2)+math.pow(j-N//2,2))
-            if d == 0: h[i][j] = 0
+            d = math.sqrt(math.pow(i - M // 2, 2) + math.pow(j - N // 2, 2))
+            if d == 0:
+                h[i][j] = 0
             else:
-                h[i][j] = 1/(1+math.pow(d0/d,2*nn))
-    return np.multiply(fshift,h)
+                h[i][j] = 1 / (1 + math.pow(d0 / d, 2 * nn))
+    return np.multiply(fshift, h)
 
-def gauss_high(fshift,d0):
+
+def gauss_high(fshift, d0):
     M = fshift.shape[0]
     N = fshift.shape[1]
-    h = np.zeros((M,N))
+    h = np.zeros((M, N))
     for i in range(M):
         for j in range(N):
-            d = math.sqrt(math.pow(i-M//2,2)+math.pow(j-N//2,2))
-            h[i][j] = 1 - math.exp(-(math.pow(d,2))/(2*math.pow(d0,2)))
+            d = math.sqrt(math.pow(i - M // 2, 2) + math.pow(j - N // 2, 2))
+            h[i][j] = 1 - math.exp(-(math.pow(d, 2)) / (2 * math.pow(d0, 2)))
 
-    return np.multiply(fshift,h)
+    return np.multiply(fshift, h)
 
-def _filter(img, d0 = 10, method = 'butterworth_high'):
+
+def _filter(img, d0=10, method='butterworth_high'):
     print(img.shape)
     print(method)
     if len(img.shape) == 3:
         img = np.array(Image.fromarray(img).convert("L"))
-    f = np.fft.fft2(img)
+    f = np.float64(img)
+    f = np.fft.fft2(f)
     fshift = np.fft.fftshift(f)
     if method == 'gauss_low':
-        fshift = gauss_low(fshift,d0)
+        fshift = gauss_low(fshift, d0)
     elif method == 'gauss_high':
-        fshift = gauss_high(fshift,d0)
+        fshift = gauss_high(fshift, d0)
     elif method == 'butterworth_low':
-        fshift = butterworth_low(fshift,d0)
+        fshift = butterworth_low(fshift, d0)
     elif method == 'butterworth_high':
-        fshift = butterworth_high(fshift,d0)
-    else: return None
+        fshift = butterworth_high(fshift, d0)
+    else:
+        return None
 
     ifshift = np.fft.ifftshift(fshift)
     ift = np.fft.ifft2(ifshift)
     ift = np.real(ift)
+    ift = np.uint8(np.clip(ift, 0, 255))
 
     height, width = ift.shape
     new = np.zeros(ift.shape, dtype=np.uint8)
@@ -296,36 +328,41 @@ def _filter(img, d0 = 10, method = 'butterworth_high'):
         for j in range(width):
             new[i, j] = ift[i, j]
 
+    plt.title("Butterworth_low_pass Image")
+    plt.imshow(new, cmap='gray')
+    plt.show()
+
     return new
 
 
 def inverse_recover(fshift):
     M = fshift.shape[0]
     N = fshift.shape[1]
-    f = np.zeros((M,N),dtype=np.complex128)
+    f = np.zeros((M, N), dtype=np.complex128)
     k = 80
     for i in range(M):
         for j in range(N):
-            h = math.exp(-k*math.pow(math.pow(i-M//2,2)+math.pow(j-N//2,2),5/6))
+            h = math.exp(-k * math.pow(math.pow(i - M // 2, 2) + math.pow(j - N // 2, 2), 5 / 6))
             if h < 0.0001:
                 f[i][j] = fshift[i][j] / np.complex128(0.78);
             else:
                 f[i][j] = fshift[i][j] / np.complex128(h);
     return f
 
+
 def wiener_recover(fshift):
     M = fshift.shape[0]
     N = fshift.shape[1]
-    f = np.zeros((M,N),dtype=np.complex128)
+    f = np.zeros((M, N), dtype=np.complex128)
     k = 0.003
     for i in range(M):
         for j in range(N):
-            h = math.exp(-k*math.pow(math.pow(i-M//2,2)+math.pow(j-N//2,2),5/6))
-            f[i][j] = (1/h)*(math.pow(h,2)/(math.pow(h,2)+k))*fshift[i][j];
+            h = math.exp(-k * math.pow(math.pow(i - M // 2, 2) + math.pow(j - N // 2, 2), 5 / 6))
+            f[i][j] = (1 / h) * (math.pow(h, 2) / (math.pow(h, 2) + k)) * fshift[i][j];
     return f
 
 
-def _recover(img, method = 'wiener'):
+def _recover(img, method='wiener'):
     if len(img.shape) == 3:
         img = np.array(Image.fromarray(img).convert("L"))
     print(method)
@@ -335,7 +372,8 @@ def _recover(img, method = 'wiener'):
         fshift = inverse_recover(fshift)
     elif method == 'wiener':
         fshift = wiener_recover(fshift)
-    else: return None
+    else:
+        return None
 
     ifshift = np.fft.ifftshift(fshift)
     ift = np.fft.ifft2(ifshift)
@@ -353,6 +391,7 @@ def _recover(img, method = 'wiener'):
 
     return new
 
+
 def getThreshold(img_array):
     height, width = img_array.shape
     img_array = img_array.reshape(height * width)
@@ -362,7 +401,7 @@ def getThreshold(img_array):
         a = [x for x in img_array if x < i]
         b = [x for x in img_array if x >= i]
         mean_a, mean_b = np.mean(a), np.mean(b)
-        value = len(a)*len(b)*(mean_a-mean_b) * (mean_a - mean_b)
+        value = len(a) * len(b) * (mean_a - mean_b) * (mean_a - mean_b)
         max_value, threshold = (value, i) if value > max_value else (max_value, threshold)
         print(max_value, threshold, i)
         if threshold != i:
@@ -382,6 +421,8 @@ def ostu(img_array):
             new[i, j] = 0 if img_array[i, j] < threshold else 255
 
     return new
+
+
 def fft_frequency(img):
     if len(img.shape) == 3:
         img = np.array(Image.fromarray(img).convert("L"))
@@ -404,29 +445,29 @@ def fft_frequency(img):
     return new
 
 
-def enhance_brightness(img,co):
+def enhance_brightness(img, co):
     img = Image.fromarray(img)
     img = img.point(lambda i: int(i * co))
     img = np.array(img)
     return img
 
-def enhance_sharpeness(img,co):
+
+def enhance_sharpeness(img, co):
     img = Image.fromarray(img)
     img = ImageEnhance.Sharpness(img).enhance(co)
     img = np.array(img)
     return img
 
-def enhance_contrast(img,co):
+
+def enhance_contrast(img, co):
     img = Image.fromarray(img)
     img = ImageEnhance.Contrast(img).enhance(co)
     img = np.array(img)
     return img
 
-def enhance_color(img,co):
+
+def enhance_color(img, co):
     img = Image.fromarray(img)
     img = ImageEnhance.Color(img).enhance(co)
     img = np.array(img)
     return img
-
-
-
