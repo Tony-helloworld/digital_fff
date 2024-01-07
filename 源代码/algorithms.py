@@ -129,7 +129,6 @@ def avgFilter(imarray, k=3):
                 new_arr[i][j][0] = np.average(num[:, :, 0])
                 new_arr[i][j][1] = np.average(num[:, :, 1])
                 new_arr[i][j][2] = np.average(num[:, :, 2])
-    # new_im = Image.fromarray(new_arr)
     return new_arr
 
 
@@ -236,40 +235,16 @@ def gauss_low(fshift, d0):
     return np.multiply(fshift, h)
 
 
-def butterworth_low(g_shifted, d0):
-    # M = fshift.shape[0]
-    # N = fshift.shape[1]
-    # h = np.zeros((M,N))
-    # nn = 2
-    # for i in range(M):
-    #     for j in range(N):
-    #         d = math.sqrt(math.pow(i-M//2,2)+math.pow(j-N//2,2))
-    #         h[i][j] = 1/(1+math.pow(d/d0,2*nn))
-    # return np.multiply(fshift,h)
-
-    # 获取图像尺寸
-    M, N = g_shifted.shape
-
-    # 生成滤波器的中心
-    x = np.arange(-N / 2, N / 2)
-    y = np.arange(-M / 2, M / 2)
-    x, y = np.meshgrid(x, y)
-
-    # 设定布特沃斯滤波器的参数
-    D0 = 20.0  # 截止频率
-    n = 3  # 滤波器的阶数
-
-    # 计算距离中心的距离
-    D = np.sqrt(x ** 2 + y ** 2)
-
-    # 创建布特沃斯低通滤波器
-    Butterworth_low_pass = 1 / (1 + (D / D0) ** (2 * n))
-
-    # 应用布特沃斯低通滤波器到频域图像
-    g_filtered = g_shifted * Butterworth_low_pass
-
-    return g_filtered
-
+def butterworth_low(fshift, d0):
+    M = fshift.shape[0]
+    N = fshift.shape[1]
+    h = np.zeros((M,N))
+    nn = 2
+    for i in range(M):
+        for j in range(N):
+            d = math.sqrt(math.pow(i-M//2,2)+math.pow(j-N//2,2))
+            h[i][j] = 1/(1+math.pow(d/d0,2*nn))
+    return np.multiply(fshift,h)
 
 def butterworth_high(fshift, d0):
     M = fshift.shape[0]
@@ -298,7 +273,7 @@ def gauss_high(fshift, d0):
     return np.multiply(fshift, h)
 
 
-def _filter(img, d0=10, method='butterworth_high'):
+def _filter(img, d0=20, method='butterworth_high'):
     print(img.shape)
     print(method)
     if len(img.shape) == 3:
@@ -328,38 +303,32 @@ def _filter(img, d0=10, method='butterworth_high'):
         for j in range(width):
             new[i, j] = ift[i, j]
 
-    plt.title("Butterworth_low_pass Image")
-    plt.imshow(new, cmap='gray')
-    plt.show()
-
     return new
 
 
 def inverse_recover(fshift):
-    M = fshift.shape[0]
-    N = fshift.shape[1]
-    f = np.zeros((M, N), dtype=np.complex128)
-    k = 80
-    for i in range(M):
-        for j in range(N):
-            h = math.exp(-k * math.pow(math.pow(i - M // 2, 2) + math.pow(j - N // 2, 2), 5 / 6))
-            if h < 0.0001:
-                f[i][j] = fshift[i][j] / np.complex128(0.78);
-            else:
-                f[i][j] = fshift[i][j] / np.complex128(h);
-    return f
+    rows, cols = fshift.shape
+    center_row, center_col = rows // 2, cols // 2
+
+    u, v = np.meshgrid(np.arange(rows) - center_row, np.arange(cols) - center_col)
+    H = np.exp(-80 * (u ** 2 + v ** 2) ** (5 / 6))
+    H[H < 0.0001] = 0.78
+    # 频域逆滤波
+    result = fshift / H
+    return  result
 
 
 def wiener_recover(fshift):
-    M = fshift.shape[0]
-    N = fshift.shape[1]
-    f = np.zeros((M, N), dtype=np.complex128)
-    k = 0.003
-    for i in range(M):
-        for j in range(N):
-            h = math.exp(-k * math.pow(math.pow(i - M // 2, 2) + math.pow(j - N // 2, 2), 5 / 6))
-            f[i][j] = (1 / h) * (math.pow(h, 2) / (math.pow(h, 2) + k)) * fshift[i][j];
-    return f
+    rows, cols = fshift.shape
+    center_row, center_col = rows // 2, cols // 2
+
+    u, v = np.meshgrid(np.arange(rows) - center_row, np.arange(cols) - center_col)
+    H = np.exp(-0.0025 * (u ** 2 + v ** 2) ** (5 / 6))
+
+    # 维纳滤波
+    result = (1 / H) * (np.abs(H) ** 2 / (np.abs(H) ** 2 + 0.0025)) * fshift
+    return result
+
 
 
 def _recover(img, method='wiener'):
@@ -377,11 +346,11 @@ def _recover(img, method='wiener'):
 
     ifshift = np.fft.ifftshift(fshift)
     ift = np.fft.ifft2(ifshift)
-    ift = np.real(ift)
-    ift = ift.astype(np.uint8)
-
-    img = Image.fromarray(ift.astype(np.uint8))
-    img.show()
+    ift = np.abs(ift)
+    # ift = ift.astype(np.uint8)
+    ift = np.uint8(np.clip(ift, 0, 255))
+    # img = Image.fromarray(ift.astype(np.uint8))
+    # img.show()
 
     height, width = ift.shape
     new = np.zeros(ift.shape, dtype=np.uint8)
