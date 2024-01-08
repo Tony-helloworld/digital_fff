@@ -26,6 +26,8 @@ class Launcher(QWidget):
         self.ui.horizontalSlider_4.valueChanged.connect(self.handel_enhance_brightness)
 
         # connect btn
+
+
         self.ui.btn_open.clicked.connect(self.open_folder)
         self.ui.original_btn.clicked.connect(self.set_original_img)
         self.ui.exp_btn.clicked.connect(self.handel_exponential)
@@ -33,6 +35,8 @@ class Launcher(QWidget):
 
         self.ui.hist_btn.clicked.connect(self.handel_histogram)
         self.ui.reverse_btn.clicked.connect(self.handel_reverse)
+
+        self.ui.log_btn.clicked.connect(self.handel_logarithm)
 
         self.ui.mid_btn.clicked.connect(self.handel_oil_midFilter)
         self.ui.mean_btn.clicked.connect(self.handel_oil_avgFilter)
@@ -104,6 +108,10 @@ class Launcher(QWidget):
         self.img_arr = algorithms.equalizeHist(self.img_arr)
         self.handle_change_image()
 
+    def handel_logarithm(self):
+        self.set_img_format()
+        self.img_arr = algorithms.logarithmic_transform(self.img_arr)
+        self.handle_change_image()
     def handel_oil_paint(self):
         self.set_img_format()
         self.img_arr = algorithms.oil_painting(self.img_arr)
@@ -165,7 +173,7 @@ class Launcher(QWidget):
         self.handle_change_image()
 
     def handel_enhance_contrast(self):
-        self.ui.horizontalSlider.setTickPosition(QSlider.TicksLeft)
+        # self.ui.horizontalSlider.setTickPosition(QSlider.TicksLeft)
         self.set_img_format()
         self.img_arr = algorithms.enhance_contrast(self.img_arr, self.ui.horizontalSlider_2.value())
 

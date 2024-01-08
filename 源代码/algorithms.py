@@ -69,6 +69,22 @@ def exponential(img, C=10, gamma=0.4):
     return img1
 
 
+def logarithmic_transform(img, c=10):
+    h, w, d = img.shape[0], img.shape[1], img.shape[2]
+    print(h,w,d)
+    new_img = np.zeros((h, w, d))
+    for i in range(h):
+        for j in range(w):
+            for k in range(d):
+                new_img[i, j, k] = c * (math.log(1.0 + img[i, j, k]))
+                print(new_img[i][j][k],img[i][j][k])
+    new_img = cv2.normalize(new_img, new_img, 0, 255, cv2.NORM_MINMAX)
+    new_img = cv2.convertScaleAbs(new_img)
+    # new_img = np.clip(new_img, 0, 255).astype(np.uint8)
+
+    return new_img
+
+
 def reverse_img(img):
     return 255 - img
 
@@ -392,6 +408,17 @@ def ostu(img_array):
     return new
 
 
+
+def power_law_transform(img, c=10, gamma=10):
+    h, w, d = img.shape[0], img.shape[1], img.shape[2]
+    new_img = np.zeros((h, w, d), dtype=np.float32)
+    for i in range(h):
+        for j in range(w):
+            for k in range(d):
+                new_img[i, j, k] = c * math.pow(img[i, j, k], gamma)
+    cv2.normalize(new_img, new_img, 0, 255, cv2.NORM_MINMAX)
+    new_img = cv2.convertScaleAbs(new_img)
+    return new_img
 def fft_frequency(img):
     if len(img.shape) == 3:
         img = np.array(Image.fromarray(img).convert("L"))
