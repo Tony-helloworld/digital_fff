@@ -39,9 +39,9 @@
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
-   <rect>
-    <x>465</x>
-    <y>140</y>
+    <rect>
+     <x>465</x>
+     <y>140</y>
      <width>450</width>
      <height>390</height>
     </rect>
@@ -231,366 +231,6 @@
       <height>1300</height>
      </size>
     </property>
-    <widget class="QWidget" name="gridWidget_2" native="true">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>250</y>
-       <width>351</width>
-       <height>1000</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>1000</height>
-      </size>
-     </property>
-     <layout class="QGridLayout" name="RRR1_4">
-      <item row="7" column="1">
-       <widget class="QPushButton" name="edge_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>边缘提取</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="mean_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>均值滤波</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="hist_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>直方图均衡化</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="butter_low_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>布特沃斯低通</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
-       <widget class="QPushButton" name="inverse_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>逆滤波</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="gauss_low_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>高斯低通</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="1">
-       <widget class="QPushButton" name="ostu_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Otsu</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="fft_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>傅立叶变换频谱</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QPushButton" name="butter_high_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>布特沃斯高通</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="vena_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>维纳滤波</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="lap_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>拉普拉斯</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="1">
-       <widget class="QPushButton" name="oil_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>油画</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QPushButton" name="sketch_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>素描</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QPushButton" name="reverse_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>彩色负片</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QPushButton" name="gauss_high_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>高斯高通</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QPushButton" name="gamma_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>伽马校正</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QPushButton" name="exp_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>指数灰度</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="mid_btn">
-        <property name="minimumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>中值滤波</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
     <widget class="QWidget" name="gridLayoutWidget_3">
      <property name="geometry">
       <rect>
@@ -636,6 +276,9 @@
       </item>
       <item row="3" column="1">
        <widget class="QSlider" name="horizontalSlider_4">
+        <property name="minimum">
+         <number>1</number>
+        </property>
         <property name="maximum">
          <number>10</number>
         </property>
@@ -739,6 +382,404 @@
          </size>
         </property>
        </spacer>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="gridWidget_2" native="true">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>270</y>
+       <width>331</width>
+       <height>1000</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>1000</height>
+      </size>
+     </property>
+     <layout class="QGridLayout" name="RRR1_4">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="mean_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>均值滤波</string>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="0">
+       <widget class="QPushButton" name="sketch_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>素描</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QPushButton" name="reverse_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>彩色负片</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="vena_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>维纳滤波</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QPushButton" name="butter_high_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>布特沃斯高通</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QPushButton" name="gamma_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>伽马校正</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="inverse_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>逆滤波</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QPushButton" name="butter_low_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>布特沃斯低通</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QPushButton" name="gauss_low_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>高斯低通</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QPushButton" name="hist_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>直方图均衡化</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="lap_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>拉普拉斯</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QPushButton" name="exp_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>指数灰度</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QPushButton" name="gauss_high_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>高斯高通</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="QPushButton" name="edge_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>边缘提取</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QPushButton" name="fft_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>傅立叶变换频谱</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="mid_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>中值滤波</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="QPushButton" name="ostu_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Otsu</string>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="1">
+       <widget class="QPushButton" name="oil_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>油画</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="log_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>对数灰度</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="power_btn">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>指数灰度</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
